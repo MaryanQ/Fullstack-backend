@@ -26,7 +26,7 @@ public class ParticipantController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Participant> getParticipantById(Long id) {
+    public Optional<Participant> getParticipantById(@PathVariable Long id) {
         return participantService.getParticipantsById(id);
     }
 
