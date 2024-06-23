@@ -1,5 +1,6 @@
 package edu.fullstackbackend.Service;
 
+import edu.fullstackbackend.Entity.Disciplin;
 import edu.fullstackbackend.Entity.Participant;
 import edu.fullstackbackend.Repository.ParticipantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,24 @@ public class ParticipantService {
             participant.setGender(updatedParticipant.getGender());
             participant.setAge(updatedParticipant.getAge());
             participant.setClub(updatedParticipant.getClub());
+
+            // Fjern eksisterende discipliner
+            participant.getDisciplines().clear();
+
+            // Tilføj de nye discipliner
+            for (Disciplin discipline : updatedParticipant.getDisciplines()) {
+                discipline.setParticipant(participant);
+                participant.getDisciplines().add(discipline);
+            }
+
             return participantRepository.save(participant);
         }).orElseGet(() -> {
             updatedParticipant.setId(id);
+            for (Disciplin discipline : updatedParticipant.getDisciplines()) {
+                discipline.setParticipant(updatedParticipant);
+            }
             return participantRepository.save(updatedParticipant);
         });
-
-
     }
 
     public void deleteParticipant(Long id) {
@@ -86,4 +98,6 @@ public List<Participant> findByAge(int age) {
             return participantRepository.findAll();
         }
     }
+
+
 }

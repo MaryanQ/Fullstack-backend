@@ -28,7 +28,9 @@ public class Participant {
 
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @JsonIgnore
     private Set<Result> results = new HashSet<>();
+
 
 
     public Participant(String name, String gender, int age, String club) {

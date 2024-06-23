@@ -1,6 +1,8 @@
 package edu.fullstackbackend.Controller;
 
+import edu.fullstackbackend.Entity.Disciplin;
 import edu.fullstackbackend.Entity.Participant;
+import edu.fullstackbackend.Service.DisciplinService;
 import edu.fullstackbackend.Service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ public class ParticipantController {
 
     @Autowired
     private ParticipantService participantService;
+    private DisciplinService disciplinService;
 
     public ParticipantController(ParticipantService participantService) {
         this.participantService = participantService;
@@ -53,5 +56,15 @@ public class ParticipantController {
             @RequestParam(required = false) String club
     ) {
         return participantService.filterParticipants(name, gender, minAge, club);
+    }
+
+    @GetMapping("/disciplines")
+    public List<Disciplin> getAllDisciplines() {
+        return disciplinService.getAllDisciplines();
+    }
+
+    @PostMapping("/disciplines")
+    public Disciplin createDisciplin(@RequestBody Disciplin disciplin) {
+        return disciplinService.saveDisciplin(disciplin);
     }
 }

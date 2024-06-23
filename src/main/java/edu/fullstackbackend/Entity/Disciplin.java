@@ -3,6 +3,7 @@ package edu.fullstackbackend.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,16 +14,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Disciplin {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String resultType;
 
-    @OneToOne
-    @JoinColumn(name = "result_id")
+    @OneToOne(mappedBy = "disciplin", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Result result;
 
     @ManyToOne
@@ -30,8 +33,14 @@ public class Disciplin {
     @JsonBackReference
     private Participant participant;
 
+    public Disciplin(String name, String resultType) {
+        this.name = name;
+        this.resultType = resultType;
+    }
 
-
-
-
+    public Disciplin(String name, String resultType, Participant participant) {
+        this.name = name;
+        this.resultType = resultType;
+        this.participant = participant;
+    }
 }
